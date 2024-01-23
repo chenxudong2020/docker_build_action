@@ -52,3 +52,13 @@ jobs:
             imageName=overtls
             docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
             docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
+            git config --global user.name 'Action Bot'
+            git config --global user.email 'bot@noreply.github.com'
+            git remote set-url origin https://x-access-token:${{ secrets.DUBUXTOKEN }}@github.com/${{secrets.REPOSITORY}}
+            file= overtls/README.md
+            if [ -f "$file" ]; then
+              git rm $file
+              git add $file
+              git commit -am "update readme" && git push || echo "add $imageName readme" 
+            fi
+
