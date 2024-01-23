@@ -1,0 +1,54 @@
+name: Build_codeserver
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+    inputs:
+      clean_cache:
+        description: 'Clear caches'
+        required: false
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{secrets.REPOSITORY}}
+          ref: main
+          token: ${{ secrets.DUBUXTOKEN }}
+          submodules: true
+          show-progress: true
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v3
+
+      - name: build_JAR_AND_Images
+        id: build_JAR_AND_Images
+        run : |
+          git clone https://github.com/linuxserver/docker-code-server.git
+          cd docker-code-server
+          \cp -rf ../codeserver/* ./
+          docker build -t codeserver:latest .
+          
+
+      - name: Login to aliyuncs
+        uses: docker/login-action@v2
+        with:
+          registry: registry.cn-hangzhou.aliyuncs.com
+          username: ${{ secrets.HUB_NAME }}
+          password: ${{ secrets.HUB_PASS }}
+
+      # Runs a single command using the runners shell
+      - name: Push Docker images
+        id : Push_Docker_Images
+        run : |
+           imageName=codeserver
+           docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
+           docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
+           echo "registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest"

@@ -1,0 +1,53 @@
+name: Build_IP_Derper_Images
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+    inputs:
+      clean_cache:
+        description: 'Clear caches'
+        required: false
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{secrets.REPOSITORY}}
+          ref: main
+          token: ${{ secrets.DUBUXTOKEN }}
+          submodules: true
+          show-progress: true
+
+      - name: modify
+        run: |
+          git clone https://github.com/tailscale/tailscale
+          cd tailscale
+          sed -i '/hi.ServerName != m.hostname/,+2d' cmd/derper/cert.go
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v3
+          
+      - name: Login to aliyuncs
+        uses: docker/login-action@v2
+        with:
+          registry: registry.cn-hangzhou.aliyuncs.com
+          username: ${{ secrets.HUB_NAME }}
+          password: ${{ secrets.HUB_PASS }}
+
+      # Runs a single command using the runners shell
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          file: 'Build_IP_Derper_Images'
+          platforms: linux/amd64
+          context: ./
+          push: true
+          tags: |
+            registry.cn-hangzhou.aliyuncs.com/dubux/ip_derper:latest
