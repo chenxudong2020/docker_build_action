@@ -22,12 +22,6 @@ jobs:
           submodules: true
           show-progress: true
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.DUBUXTOKEN }}
-          submodules: true    
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -58,19 +52,3 @@ jobs:
             imageName=overtls
             docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
             docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
-            file= "$imageName/README.md"
-            repositoryname="docker_build_action"
-            \cp f
-            if [ -d "$repositoryname/$imageName" ]; then
-              \cp -rf $file $repositoryname/$imageName
-              else
-                mkdir -p $repositoryname/$imageName
-                \cp -rf $file $repositoryname/$imageName
-            fi
-            cd $repositoryname
-            git config --global user.name 'Action Bot'
-            git config --global user.email 'bot@noreply.github.com'
-            git remote set-url origin https://x-access-token:${{ secrets.DUBUXTOKEN }}@github.com/${{ github.repository }}
-            git add $file
-            git commit -am "update readme" && git push || echo "add $imageName readme"
-
