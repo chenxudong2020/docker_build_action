@@ -53,7 +53,7 @@ jobs:
           
       - name: Build SPK
         id: Build_SPK
-        run : |
+        run: |
           cd chislash && chmod +x ./pkgCreate.sh && ./pkgCreate.sh && echo "buildResult=$(-d ${{ github.workspace }}/chislash/build)" >> $GITHUB_OUTPUT
 
       - name: release
