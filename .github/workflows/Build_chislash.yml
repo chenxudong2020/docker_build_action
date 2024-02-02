@@ -55,15 +55,16 @@ jobs:
       - name: Build SPK
         id: Build_SPK
         run : |
-          cd chislash && chmod +x ./pkgCreate.sh && ./pkgCreate.sh && echo "buildResult=$(-d ${{ github.workspace }}/chislash/build)" >> $GITHUB_OUTPUT
+          cd chislash && pwd && chmod +x ./pkgCreate.sh && ./pkgCreate.sh
       
       - name: Release
         uses: ncipollo/release-action@v1
         id: release_packages
-        if: ${{steps.Build_SPK.outputs.buildResult}}== 'true'
+        if: always()
         with:
             artifacts: "${{ github.workspace }}/chislash/build/*.spk"
             allowUpdates: true
+            token: ${{ secrets.DUBUXTOKEN }}
             generateReleaseNotes: false
             tag: "v1.0.0"
             body: |
