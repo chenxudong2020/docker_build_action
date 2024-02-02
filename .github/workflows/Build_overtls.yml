@@ -64,12 +64,12 @@ jobs:
         id: Build_SPK
         run : |
           dir="overtls"
-          isExist="false"
+          isExist='false'
           if [ -d "$dir" ]; then  
               cd $dir && pwd && chmod +x ./pkgCreate.sh && ./pkgCreate.sh
-              isExist="true"
+              isExist='true'
           fi
-          echo 'isExist="${isExist}"' >> $GITHUB_ENV
+          echo "isExist=${isExist}" >> $GITHUB_ENV
           
       
       - name: Release
