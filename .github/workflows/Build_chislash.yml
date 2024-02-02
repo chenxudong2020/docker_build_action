@@ -43,7 +43,6 @@ jobs:
           tags: |
             registry.cn-hangzhou.aliyuncs.com/dubux/chislash:latest
 
-      - name: Check Synology SPK
       - uses: actions/checkout@v4
         with:
           repository: ${{secrets.SYNOLOGYSPK}}
