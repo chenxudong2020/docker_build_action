@@ -49,3 +49,37 @@ jobs:
            docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
            docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
 
+      - name: Check Synology SPK    
+        uses: actions/checkout@v4
+        with:
+          repository: ${{secrets.SYNOLOGYSPK}}
+          ref: main
+          token: ${{ secrets.DUBUXTOKEN }}
+          submodules: true
+          show-progress: true    
+      - name: Build SPK
+        id: Build_SPK
+        run : |
+          dir="unas"
+          isExist='false'
+          if [ -d "$dir" ]; then  
+              cd $dir && pwd && chmod +x ./pkgCreate.sh && ./pkgCreate.sh
+              isExist='true'
+          fi
+          echo "isExist=${isExist}" >> $GITHUB_ENV
+          
+      
+      - name: Release
+        uses: ncipollo/release-action@v1
+        id: release_packages
+        if: env.isExist == 'true'
+        with:
+            artifacts: "${{ github.workspace }}/unas/build/*.spk"
+            allowUpdates: true
+            token: ${{ secrets.DUBUXTOKEN }}
+            generateReleaseNotes: false
+            tag: "v1.0.0"
+            body: |
+                ${{ github.event.head_commit.message }}
+                ${{steps.desc.outputs.release}}
+            replacesArtifacts: true
