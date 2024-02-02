@@ -63,12 +63,19 @@ jobs:
       - name: Build SPK
         id: Build_SPK
         run : |
-          cd overtls && pwd && chmod +x ./pkgCreate.sh && ./pkgCreate.sh
+          dir="overtls"
+          isExist="false"
+          if [ -d "$dir" ]; then  
+              cd $dir && pwd && chmod +x ./pkgCreate.sh && ./pkgCreate.sh
+              isExist="true"
+          fi
+          echo 'isExist="${isExist}"' >> $GITHUB_ENV
+          
       
       - name: Release
         uses: ncipollo/release-action@v1
         id: release_packages
-        if: always()
+        if: env.isExist == 'true'
         with:
             artifacts: "${{ github.workspace }}/overtls/build/*.spk"
             allowUpdates: true
