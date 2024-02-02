@@ -1,2 +1,3 @@
 # docker_build_action
 docker构建仓库
+构建的synology spk只能运行在DSM7.2+ 同时安装了ContainerManager套件才能安装，安装请阅读安装描述说明使用。
