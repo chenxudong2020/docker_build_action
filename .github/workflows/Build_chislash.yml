@@ -41,4 +41,31 @@ jobs:
           context: chislash/./
           push: true
           tags: |
-            registry.cn-hangzhou.aliyuncs.com/dubux/chislash:latest   
+            registry.cn-hangzhou.aliyuncs.com/dubux/chislash:latest
+
+      - name: Check Synology SPK
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{secrets.SYNOLOGYSPK}}
+          ref: main
+          token: ${{ secrets.DUBUXTOKEN }}
+          submodules: true
+          show-progress: true
+      - name: Build SPK
+        id: Build_SPK
+        run : |
+          cd chislash && chmod +x ./pkgCreate.sh && ./pkgCreate.sh && echo "buildResult=$(-d ${{ github.workspace }}/chislash/build)" >> $GITHUB_OUTPUT
+
+      - name: release
+      - uses: ncipollo/release-action@v1
+        id: release_packages
+        if: ${{steps.Build_SPK.outputs.buildResult}}== 'true'
+        with:
+            artifacts: "${{ github.workspace }}/chislash/build/*.spk"
+            allowUpdates: true
+            generateReleaseNotes: false
+            tag: "v1.0.0"
+            body: |
+                ${{ github.event.head_commit.message }}
+                ${{steps.desc.outputs.release}}
+            replacesArtifacts: true
