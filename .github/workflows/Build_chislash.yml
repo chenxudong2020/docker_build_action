@@ -53,10 +53,9 @@ jobs:
           
       - name: Build SPK
         id: Build_SPK
-        run: |
+        run : |
           cd chislash && chmod +x ./pkgCreate.sh && ./pkgCreate.sh && echo "buildResult=$(-d ${{ github.workspace }}/chislash/build)" >> $GITHUB_OUTPUT
 
-      - name: release
       - uses: ncipollo/release-action@v1
         id: release_packages
         if: ${{steps.Build_SPK.outputs.buildResult}}== 'true'
