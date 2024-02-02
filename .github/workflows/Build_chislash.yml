@@ -51,6 +51,7 @@ jobs:
           token: ${{ secrets.DUBUXTOKEN }}
           submodules: true
           show-progress: true
+          
       - name: Build SPK
         id: Build_SPK
         run : |
