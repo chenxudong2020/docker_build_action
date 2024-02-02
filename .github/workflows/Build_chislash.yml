@@ -14,6 +14,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Check
       - uses: actions/checkout@v4
         with:
           repository: ${{secrets.REPOSITORY}}
@@ -21,7 +22,14 @@ jobs:
           token: ${{ secrets.DUBUXTOKEN }}
           submodules: true
           show-progress: true
-
+      - name: Check Synology SPK    
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{secrets.SYNOLOGYSPK}}
+          ref: main
+          token: ${{ secrets.DUBUXTOKEN }}
+          submodules: true
+          show-progress: true
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -42,14 +50,6 @@ jobs:
           push: true
           tags: |
             registry.cn-hangzhou.aliyuncs.com/dubux/chislash:latest
-
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{secrets.SYNOLOGYSPK}}
-          ref: main
-          token: ${{ secrets.DUBUXTOKEN }}
-          submodules: true
-          show-progress: true
           
       - name: Build SPK
         id: Build_SPK
