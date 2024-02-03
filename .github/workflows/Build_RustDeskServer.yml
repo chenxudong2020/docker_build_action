@@ -32,11 +32,6 @@ jobs:
         uses: actions/setup-go@v1
         with:
          go-version: 1.19
-      - name: Build RustDesk API Server
-        run: |
-          cd rustdesk-api-server
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o rustdesk-api-server .
-          \cp -f rustdesk-api-server ../rustdesk/apiserver
   
       - name: Build RustDesk Server
         run: |
@@ -64,17 +59,18 @@ jobs:
           registry: registry.cn-hangzhou.aliyuncs.com
           username: ${{ secrets.HUB_NAME }}
           password: ${{ secrets.HUB_PASS }}
-
-      # Runs a single command using the runners shell
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v2
-        with:
-          file: 'Build_RustDeskServer'
-          platforms: linux/amd64
-          context: ./
-          push: true
-          tags: |
-            registry.cn-hangzhou.aliyuncs.com/dubux/rustdeskserver:latest
+      - name: Build RustDesk API Server
+        run: |
+          git clone https://github.com/kingmo888/rustdesk-api-server
+          cd rustdesk-api-server
+          docker build -t rustdeskserverapi:latest . --no-cache
+      - name: Push Docker images
+        id : Push_Docker_Images
+        run : |
+            imageName=rustdeskserver
+            docker build -f Build_RustDeskServer -t $imageName .
+            docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
+            docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
       - name: Check Synology SPK    
         uses: actions/checkout@v4
         with:
