@@ -61,8 +61,8 @@ jobs:
           password: ${{ secrets.HUB_PASS }}
       - name: Build RustDesk API Server
         run: |
-          git clone https://github.com/kingmo888/rustdesk-api-server
-          cd rustdesk-api-server
+          git clone https://github.com/kingmo888/rustdesk-api-server ./kingmo888rustdesk-api-server
+          cd ./kingmo888rustdesk-api-server
           docker build -t rustdeskserverapi:latest . --no-cache
       - name: Push Docker images
         id : Push_Docker_Images
