@@ -35,7 +35,12 @@ jobs:
       - name: build_JAR_AND_Images
         id: build_JAR_AND_Images
         run : |
+          mkdir -p nginxWebUI/src/main/resources/acme
+          unzip -d nginxWebUI/src/main/resources/acme nginxWebUI/src/main/resources/acme.zip
           cd nginxWebUI
+          mv -f synology_dsm_local.sh nginxWebUI/src/main/resources/acme/
+          zip -r acme.zip nginxWebUI/src/main/resources/acme/*
+          mv -f acme.zip nginxWebUI/src/main/resources/
           mvn clean package
           docker build -t nginxwebui:latest .
           
