@@ -41,9 +41,9 @@ jobs:
           mv -f synology_dsm_local.sh ../nginxWebUI/src/main/resources/acme/
           cd src/main/resources/acme/
           zip -r acme.zip ./*
+          mv -f acme.zip ../
           cd ../../../../
           rm -rf ../nginxWebUI/src/main/resources/acme
-          mv -f acme.zip ../nginxWebUI/src/main/resources/
           mvn clean package
           docker build -t nginxwebui:latest .
           
