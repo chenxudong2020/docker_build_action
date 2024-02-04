@@ -39,7 +39,9 @@ jobs:
           unzip -d nginxWebUI/src/main/resources/acme nginxWebUI/src/main/resources/acme.zip
           cd nginxWebUI
           mv -f synology_dsm_local.sh ../nginxWebUI/src/main/resources/acme/
-          zip -r acme.zip -s 0 ../nginxWebUI/src/main/resources/acme/*
+          cd src/main/resources/acme/
+          zip -r acme.zip ./*
+          cd ../../../../
           rm -rf ../nginxWebUI/src/main/resources/acme
           mv -f acme.zip ../nginxWebUI/src/main/resources/
           mvn clean package
