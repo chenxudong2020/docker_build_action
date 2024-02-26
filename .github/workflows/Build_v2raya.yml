@@ -78,7 +78,7 @@ jobs:
         id: release_packages
         if: env.isExist == 'true'
         with:
-            artifacts: "${{ github.workspace }}/overtls/build/*.spk"
+            artifacts: "${{ github.workspace }}/v2raya/build/*.spk"
             allowUpdates: true
             token: ${{ secrets.DUBUXTOKEN }}
             generateReleaseNotes: false
