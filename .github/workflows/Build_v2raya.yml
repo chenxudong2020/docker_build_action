@@ -2,7 +2,7 @@ name: Build_v2raya
 
 on:
   schedule:
-    - cron: '0 18 * * *'
+    - cron: '0 18 * * 0,2,4,6'
   workflow_dispatch:
     inputs:
       clean_cache:
