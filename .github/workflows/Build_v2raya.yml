@@ -39,7 +39,7 @@ jobs:
         run : |
             git clone https://github.com/v2rayA/v2rayA
             cd v2rayA
-            docker build -t v2raya:latest .
+            docker build -f Dockerfile.nightly -t v2raya:latest .
             
       - name: Login to aliyuncs
         uses: docker/login-action@v2
