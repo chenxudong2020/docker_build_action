@@ -12,7 +12,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Check
         uses: actions/checkout@v4
