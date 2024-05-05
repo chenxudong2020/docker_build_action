@@ -37,8 +37,10 @@ jobs:
 
       - name: Build Docker images
         run : |
-            git clone https://github.com/helloxz/ccaa
-            cd ccaa
+            git clone https://github.com/helloxz/ccaa ccaa_dist
+            cp -rf ccaa/* ccaa_dist
+            cd ccaa_dist
+            chmod +x *.sh
             docker build -f Dockerfile -t ccaa:latest .
             
       - name: Login to aliyuncs
