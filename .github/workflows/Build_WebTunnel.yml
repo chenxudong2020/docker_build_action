@@ -33,7 +33,7 @@ jobs:
         run : |
           
           cd WebTunnel
-          docker build --rm -t webtunnel .
+          docker build --rm -t mywebtunnel .
           
       - name: Login to aliyuncs
         uses: docker/login-action@v2
@@ -46,7 +46,7 @@ jobs:
       - name: Push Docker images
         id : Push_Docker_Images
         run : |
-           imageName=webtunnel
+           imageName=mywebtunnel
            docker tag $imageName registry.cn-hangzhou.aliyuncs.com/dubux/$imageName:latest
            docker push registry.cn-hangzhou.aliyuncs.com/dubux/$imageName
       - name: Check Synology SPK    
