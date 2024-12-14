@@ -1,4 +1,4 @@
-name: Build_Images_For_Synology
+name: Build_IP_Derper_For_Synology
 
 on:
   schedule:
