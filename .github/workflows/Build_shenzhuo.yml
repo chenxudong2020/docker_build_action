@@ -37,7 +37,7 @@ jobs:
           SHENZHUO_VERSION=9.3.8.2
           curl -Lo shenzhuo.tar "https://download.shenzhuohl.com/down/chuantou/ubuntu/${SHENZHUO_VERSION}/shenzhuo.tar"
           tar -xf shenzhuo.tar && rm -rf shenzhuo.tar
-          mv * ../shenzhuoshenzhuo/rootfs/etc/s6-overlay/s6-rc.d/shenzhuo/
+          mv * ../shenzhuo/rootfs/etc/s6-overlay/s6-rc.d/shenzhuo/
           docker build -t shenzhuo:latest .
           
       - name: Login to aliyuncs
