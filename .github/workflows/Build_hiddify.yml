@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: ${{secrets.REPOSITORY}}
-          ref: main
+          ref: hiddify-runit2
           token: ${{ secrets.DUBUXTOKEN }}
           submodules: true
           show-progress: true
