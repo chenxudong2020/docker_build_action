@@ -38,5 +38,5 @@ jobs:
       run: |
         git config --global user.name 'Action Bot'
         git config --global user.email 'bot@noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.DUBUXTOKEN }}@github.com/${{secrets.REPOSITORY}}
+        git remote set-url origin https://x-access-token:${{ secrets.DUBUXTOKEN }}@github.com/${{secrets.REPOSITORY2}}
         git commit -am "Auto updated submodule references" && git push || echo "No changes to commit"
